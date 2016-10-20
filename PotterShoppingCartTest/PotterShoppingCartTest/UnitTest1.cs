@@ -28,7 +28,21 @@ namespace PotterShoppingCartTest
 
             Assert.AreEqual(expected, actual);
         }
-        
+
+        [TestMethod]
+        public void Tset_Add_An_Episode_1_To_2_To_Shoppingcart_And_Price_Should_Be_195()
+        {
+            var shoppingcart = new HarryPotterShoppingCart()
+            {
+                Episodes_1 = new List<Book>() { new HarryPotterEpisode_1() },
+                Episodes_2 = new List<Book>() { new HarryPotterEpisode_2() }
+            };
+            var expected = 195;
+            var actual = GetPrice(shoppingcart);
+
+            Assert.AreEqual(expected, actual);
+        }
+
         private double GetPrice(HarryPotterShoppingCart shoppingcart)
         {
             double result = 0;
