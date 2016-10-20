@@ -30,6 +30,7 @@ namespace PotterShoppingCartTest
         private double GetPrice(List<Book> books)
         {
             double result = 0;
+            result = books.Where(b => b.EpisodeNo == 1).Select(b => b.Price).Sum();
             
             return result;
         }
