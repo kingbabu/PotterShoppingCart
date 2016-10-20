@@ -42,7 +42,44 @@ namespace PotterShoppingCartTest
         private double GetPrice(List<Book> books)
         {
             double result = 0;
+            var booksGroup = books.GroupBy(b => b.EpisodeNo);
+
+            var kindOfBooksGroupCount = booksGroup.Where(g => g.Count() > 0).Count();
+
+            double off = 0;
+            switch (kindOfBooksGroupCount)
+            {
+                case 1:
+                    off = 1;
+                    break;
+                case 2:
+                    off = 0.95;
+                    break;
+                case 3:
+                    off = 0.9;
+                    break;
+                case 4:
+                    off = 0.8;
+                    break;
+                case 5:
+                    off = 0.75;
+                    break;
+                default:
+                    break;
+            }
+
+            //books = books.Aggregate(new Book(1) { }, (result, d) => result.Price = d.Price,  );
+            //foreach(var books in booksGroup)
+            //{
+
+            //    foreach (var book in books)
+            //    {
+
+            //    }
+            //}
+
             result = books.Where(b => b.EpisodeNo == 1).Select(b => b.Price).Sum();
+
 
             return result;
         }
