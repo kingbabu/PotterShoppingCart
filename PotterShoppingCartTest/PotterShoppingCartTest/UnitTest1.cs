@@ -20,21 +20,33 @@ namespace PotterShoppingCartTest
         public void Tset_Add_An_Episode_1_To_Shoppingcart_And_Price_Should_Be_100()
         {
             var Books = new List<Book>() { new Book(1) };
-            
+
             var expected = 100;
             var actual = GetPrice(Books);
 
             Assert.AreEqual(expected, actual);
         }
-        
+
+        [TestMethod]
+        public void Tset_Add_An_Episode_1_To_2_To_Shoppingcart_And_Price_Should_Be_190()
+        {
+            var Books = new List<Book>() { new Book(1),
+                                           new Book(2) };
+
+            var expected = 190;
+            var actual = GetPrice(Books);
+
+            Assert.AreEqual(expected, actual);
+        }
+
         private double GetPrice(List<Book> books)
         {
             double result = 0;
             result = books.Where(b => b.EpisodeNo == 1).Select(b => b.Price).Sum();
-            
+
             return result;
         }
-        
+
         class Book
         {
             private int _episodeNo;
