@@ -19,76 +19,30 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Tset_Add_An_Episode_1_To_Shoppingcart_And_Price_Should_Be_100()
         {
-            var shoppingcart = new HarryPotterShoppingCart()
-            {
-                Episodes_1 = new List<Book>() { new HarryPotterEpisode_1()}
-            };
+            var Books = new List<Book>() { new Book(1) };
+            
             var expected = 100;
-            var actual = GetPrice(shoppingcart);
+            var actual = GetPrice(Books);
 
             Assert.AreEqual(expected, actual);
         }
-
-        [TestMethod]
-        public void Tset_Add_An_Episode_1_To_2_To_Shoppingcart_And_Price_Should_Be_195()
-        {
-            var shoppingcart = new HarryPotterShoppingCart()
-            {
-                Episodes_1 = new List<Book>() { new HarryPotterEpisode_1() },
-                Episodes_2 = new List<Book>() { new HarryPotterEpisode_2() }
-            };
-            var expected = 195;
-            var actual = GetPrice(shoppingcart);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        private double GetPrice(HarryPotterShoppingCart shoppingcart)
+        
+        private double GetPrice(List<Book> books)
         {
             double result = 0;
-            if (shoppingcart.Episodes_1.Count > 0) result = shoppingcart.Episodes_1.Select(e => e.Price).Sum();
-
+            
             return result;
         }
-
-        private class HarryPotterShoppingCart
-        {
-            public List<Book> Episodes_1 { get; set; }
-            public List<Book> Episodes_2 { get; set; }
-            public List<Book> Episodes_3 { get; set; }
-            public List<Book> Episodes_4 { get; set; }
-            public List<Book> Episodes_5 { get; set; }
-        }
-
-        class HarryPotterEpisode_1 : Book
-        {
-            public string Name { get { return "Episode1"; } }
-
-        }
-        class HarryPotterEpisode_2 : Book
-        {
-            public string Name { get { return "Episode2"; } }
-
-        }
-        class HarryPotterEpisode_3 : Book
-        {
-            public string Name { get { return "Episode3"; } }
-
-        }
-        class HarryPotterEpisode_4 : Book
-        {
-            public string Name { get { return "Episode4"; } }
-
-        }
-        class HarryPotterEpisode_5 : Book
-        {
-            public string Name { get { return "Episode5"; } }
-
-        }
-
+        
         class Book
         {
-            //public string Name { get { return "Episode1"; } }
+            private int _episodeNo;
+
+            public Book(int episodeNo)
+            {
+                _episodeNo = episodeNo;
+            }
+            public int EpisodeNo { get { return _episodeNo; } }
             public double Price { get { return 100; } }
         }
     }
