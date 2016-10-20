@@ -60,7 +60,8 @@ namespace PotterShoppingCartTest
             if (shoppingcart.Episode_1_Count == 1) result = 100;
             if (shoppingcart.Episode_1_Count == 1 && shoppingcart.Episode_2_Count == 1) result = 100 * 2 * 0.95;
             if (shoppingcart.Episode_1_Count == 1 && shoppingcart.Episode_2_Count == 1 && shoppingcart.Episode_3_Count == 1) result = 100 * 3 * 0.9;
-
+            if (shoppingcart.Episode_1_Count == 1 && shoppingcart.Episode_2_Count == 1 && shoppingcart.Episode_3_Count == 1 && shoppingcart.Episode_4_Count == 1) result = 100 * 4 * 0.8;
+            
             return result;
         }
 
