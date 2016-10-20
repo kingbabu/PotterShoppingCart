@@ -15,7 +15,7 @@ namespace PotterShoppingCartTest
 
 
         [TestMethod]
-        public void Tset_Add_An_Episode_1_To_Shoppingcart_Price_Should_Be_100()
+        public void Tset_Add_An_Episode_1_To_Shoppingcart_And_Price_Should_Be_100()
         {
             var shoppingcart = new HarryPotterShoppingCart() { Episode_1_Count = 1 };
             var expected = 100;
@@ -25,7 +25,7 @@ namespace PotterShoppingCartTest
         }
 
         [TestMethod]
-        public void Tset_Add_An_Episode_1_And_An_Episode_2_To_Shoppingcart_Price_Should_Be_190()
+        public void Tset_Add_An_Episode_1_And_An_Episode_2_To_Shoppingcart_And_Price_Should_Be_190()
         {
             var shoppingcart = new HarryPotterShoppingCart() { Episode_1_Count = 1, Episode_2_Count = 1 };
             var expected = 190;
@@ -35,10 +35,20 @@ namespace PotterShoppingCartTest
         }
 
         [TestMethod]
-        public void Tset_Add_An_Episode_1_And_An_Episode_2_And_An_Episode_3_To_Shoppingcart_Price_Should_Be_270()
+        public void Tset_Add_An_Episode_1_To_3_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_270()
         {
             var shoppingcart = new HarryPotterShoppingCart() { Episode_1_Count = 1, Episode_2_Count = 1 , Episode_3_Count = 1};
             var expected = 270;
+            var actual = GetPrice(shoppingcart);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Tset_Add_Episode_1_To_4_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_320()
+        {
+            var shoppingcart = new HarryPotterShoppingCart() { Episode_1_Count = 1, Episode_2_Count = 1, Episode_3_Count = 1, Episode_4_Count = 1 };
+            var expected = 320;
             var actual = GetPrice(shoppingcart);
 
             Assert.AreEqual(expected, actual);
