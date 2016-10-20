@@ -38,7 +38,8 @@ namespace PotterShoppingCartTest
         {
             double result = 0;
             if (shoppingcart.Episode_1_Count == 1) result = 100;
-            
+            if (shoppingcart.Episode_1_Count == 1 && shoppingcart.Episode_2_Count == 1) result = 100 * 2 * 0.95;
+
             return result;
         }
 
