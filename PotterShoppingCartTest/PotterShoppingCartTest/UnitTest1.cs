@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PotterShoppingCartTest
 {
@@ -17,72 +19,63 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Tset_Add_An_Episode_1_To_Shoppingcart_And_Price_Should_Be_100()
         {
-            var shoppingcart = new HarryPotterShoppingCart() { Episode_1_Count = 1 };
+            var shoppingcart = new HarryPotterShoppingCart()
+            {
+                Episodes_1 = new List<Book>() { new HarryPotterEpisode_1()}
+            };
             var expected = 100;
             var actual = GetPrice(shoppingcart);
 
             Assert.AreEqual(expected, actual);
         }
-
-        [TestMethod]
-        public void Tset_Add_An_Episode_1_And_An_Episode_2_To_Shoppingcart_And_Price_Should_Be_190()
-        {
-            var shoppingcart = new HarryPotterShoppingCart() { Episode_1_Count = 1, Episode_2_Count = 1 };
-            var expected = 190;
-            var actual = GetPrice(shoppingcart);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void Tset_Add_An_Episode_1_To_3_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_270()
-        {
-            var shoppingcart = new HarryPotterShoppingCart() { Episode_1_Count = 1, Episode_2_Count = 1 , Episode_3_Count = 1};
-            var expected = 270;
-            var actual = GetPrice(shoppingcart);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void Tset_Add_Episode_1_To_4_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_320()
-        {
-            var shoppingcart = new HarryPotterShoppingCart() { Episode_1_Count = 1, Episode_2_Count = 1, Episode_3_Count = 1, Episode_4_Count = 1 };
-            var expected = 320;
-            var actual = GetPrice(shoppingcart);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void Tset_Add_Episode_1_To_5_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_375()
-        {
-            var shoppingcart = new HarryPotterShoppingCart() { Episode_1_Count = 1, Episode_2_Count = 1, Episode_3_Count = 1, Episode_4_Count = 1 , Episode_5_Count = 1 };
-            var expected = 375;
-            var actual = GetPrice(shoppingcart);
-
-            Assert.AreEqual(expected, actual);
-        }
-
+        
         private double GetPrice(HarryPotterShoppingCart shoppingcart)
         {
             double result = 0;
-            if (shoppingcart.Episode_1_Count == 1) result = 100;
-            if (shoppingcart.Episode_1_Count == 1 && shoppingcart.Episode_2_Count == 1) result = 100 * 2 * 0.95;
-            if (shoppingcart.Episode_1_Count == 1 && shoppingcart.Episode_2_Count == 1 && shoppingcart.Episode_3_Count == 1) result = 100 * 3 * 0.9;
-            if (shoppingcart.Episode_1_Count == 1 && shoppingcart.Episode_2_Count == 1 && shoppingcart.Episode_3_Count == 1 && shoppingcart.Episode_4_Count == 1) result = 100 * 4 * 0.8;
-            if (shoppingcart.Episode_1_Count == 1 && shoppingcart.Episode_2_Count == 1 && shoppingcart.Episode_3_Count == 1 && shoppingcart.Episode_4_Count == 1 && shoppingcart.Episode_5_Count == 1) result = 100 * 5 * 0.75;
+            if (shoppingcart.Episodes_1.Count > 0) result = shoppingcart.Episodes_1.Select(e => e.Price).Sum();
 
             return result;
         }
 
         private class HarryPotterShoppingCart
         {
-            public int Episode_1_Count { get; set; } = 0;
-            public int Episode_2_Count { get; set; } = 0;
-            public int Episode_3_Count { get; set; } = 0;
-            public int Episode_4_Count { get; set; } = 0;
-            public int Episode_5_Count { get; set; } = 0;
+            public List<Book> Episodes_1 { get; set; }
+            public List<Book> Episodes_2 { get; set; }
+            public List<Book> Episodes_3 { get; set; }
+            public List<Book> Episodes_4 { get; set; }
+            public List<Book> Episodes_5 { get; set; }
+        }
+
+        class HarryPotterEpisode_1 : Book
+        {
+            public string Name { get { return "Episode1"; } }
+
+        }
+        class HarryPotterEpisode_2 : Book
+        {
+            public string Name { get { return "Episode2"; } }
+
+        }
+        class HarryPotterEpisode_3 : Book
+        {
+            public string Name { get { return "Episode3"; } }
+
+        }
+        class HarryPotterEpisode_4 : Book
+        {
+            public string Name { get { return "Episode4"; } }
+
+        }
+        class HarryPotterEpisode_5 : Book
+        {
+            public string Name { get { return "Episode5"; } }
+
+        }
+
+        class Book
+        {
+            //public string Name { get { return "Episode1"; } }
+            public double Price { get { return 100; } }
         }
     }
 }
