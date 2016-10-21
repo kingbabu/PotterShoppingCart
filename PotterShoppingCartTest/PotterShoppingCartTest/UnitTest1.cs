@@ -28,7 +28,7 @@ namespace PotterShoppingCartTest
         }
 
         [TestMethod]
-        public void Tset_Add_An_Episode_1_To_2_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_190()
+        public void Tset_Add_Episode_1_To_2_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_190()
         {
             var books = new List<Book>() { new Book(1),
                                            new Book(2) };
@@ -40,7 +40,7 @@ namespace PotterShoppingCartTest
         }
 
         [TestMethod]
-        public void Tset_Add_An_Episode_1_To_3_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_270()
+        public void Tset_Add_Episode_1_To_3_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_270()
         {
             var books = new List<Book>() { new Book(1),
                                            new Book(2),
@@ -53,7 +53,7 @@ namespace PotterShoppingCartTest
         }
 
         [TestMethod]
-        public void Tset_Add_An_Episode_1_To_4_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_320()
+        public void Tset_Add_Episode_1_To_4_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_320()
         {
             var books = new List<Book>() { new Book(1),
                                            new Book(2),
@@ -67,7 +67,7 @@ namespace PotterShoppingCartTest
         }
 
         [TestMethod]
-        public void Tset_Add_An_Episode_1_To_5_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_375()
+        public void Tset_Add_Episode_1_To_5_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_375()
         {
             var books = new List<Book>() { new Book(1),
                                            new Book(2),
@@ -82,7 +82,7 @@ namespace PotterShoppingCartTest
         }
 
         [TestMethod]
-        public void Tset_Add_An_Episode_1_To_2_One_Of_Each_And_Two_Episode_3_To_Shoppingcart_And_Price_Should_Be_370()
+        public void Tset_Add_Episode_1_To_2_One_Of_Each_And_Two_Episode_3_To_Shoppingcart_And_Price_Should_Be_370()
         {
             var books = new List<Book>() { new Book(1),
                                            new Book(2),
@@ -90,6 +90,21 @@ namespace PotterShoppingCartTest
                                            new Book(3),};
 
             var expected = 370;
+            var actual = GetPrice(books);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Tset_Add_Episode_2_To_3_Two_Of_Each_And_An_Episode_1_To_Shoppingcart_And_Price_Should_Be_460()
+        {
+            var books = new List<Book>() { new Book(1),
+                                           new Book(2),
+                                           new Book(2),
+                                           new Book(3),
+                                           new Book(3),};
+
+            var expected = 460;
             var actual = GetPrice(books);
 
             Assert.AreEqual(expected, actual);
