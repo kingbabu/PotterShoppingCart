@@ -81,6 +81,20 @@ namespace PotterShoppingCartTest
             Assert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void Tset_Add_An_Episode_1_To_2_One_Of_Each_And_Two_Episode_3_To_Shoppingcart_And_Price_Should_Be_370()
+        {
+            var books = new List<Book>() { new Book(1),
+                                           new Book(2),
+                                           new Book(3),
+                                           new Book(3),};
+
+            var expected = 370;
+            var actual = GetPrice(books);
+
+            Assert.AreEqual(expected, actual);
+        }
+
         private double GetPrice(List<Book> books)
         {
             var groups = books.GroupBy(b => b.EpisodeNo);
