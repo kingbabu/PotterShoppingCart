@@ -19,10 +19,10 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Tset_Add_An_Episode_1_To_Shoppingcart_And_Price_Should_Be_100()
         {
-            var Books = new List<Book>() { new Book(1) };
+            var books = new List<Book>() { new Book(1) };
 
             var expected = 100;
-            var actual = GetPrice(Books);
+            var actual = GetPrice(books);
 
             Assert.AreEqual(expected, actual);
         }
@@ -30,11 +30,11 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Tset_Add_An_Episode_1_To_2_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_190()
         {
-            var Books = new List<Book>() { new Book(1),
+            var books = new List<Book>() { new Book(1),
                                            new Book(2) };
 
             var expected = 190;
-            var actual = GetPrice(Books);
+            var actual = GetPrice(books);
 
             Assert.AreEqual(expected, actual);
         }
@@ -42,12 +42,12 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Tset_Add_An_Episode_1_To_3_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_270()
         {
-            var Books = new List<Book>() { new Book(1),
+            var books = new List<Book>() { new Book(1),
                                            new Book(2),
                                            new Book(3),};
 
             var expected = 270;
-            var actual = GetPrice(Books);
+            var actual = GetPrice(books);
 
             Assert.AreEqual(expected, actual);
         }
@@ -55,13 +55,28 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Tset_Add_An_Episode_1_To_4_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_320()
         {
-            var Books = new List<Book>() { new Book(1),
+            var books = new List<Book>() { new Book(1),
                                            new Book(2),
                                            new Book(3),
                                            new Book(4),};
 
             var expected = 320;
-            var actual = GetPrice(Books);
+            var actual = GetPrice(books);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Tset_Add_An_Episode_1_To_5_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_375()
+        {
+            var books = new List<Book>() { new Book(1),
+                                           new Book(2),
+                                           new Book(3),
+                                           new Book(4),
+                                           new Book(5),};
+
+            var expected = 375;
+            var actual = GetPrice(books);
 
             Assert.AreEqual(expected, actual);
         }
