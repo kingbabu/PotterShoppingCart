@@ -41,13 +41,58 @@ namespace PotterShoppingCartTest
 
         private double GetPrice(List<Book> books)
         {
-            double result = 0;
-            var booksGroup = books.GroupBy(b => b.EpisodeNo);
+            var groups = books.GroupBy(b => b.EpisodeNo);
 
-            var kindOfBooksGroupCount = booksGroup.Where(g => g.Count() > 0).Count();
+            var discountGroups = new List<HarryPotterDiscountCollection>();
+            
+            while (books.Count > 0)
+            {
+                var collection = new HarryPotterDiscountCollection();
+                foreach (var group in groups)
+                {
+                    foreach (var book in group.ToList())
+                    {
+                        collection.Books.Add(book);
+                        books.Remove(book);
+                        break;
+                    }
+                }
 
+                discountGroups.Add(collection);
+            }
+            
+            double result = discountGroups.Select(c => c.Price).Sum();
+            return result;
+        }
+
+        
+
+        class Book
+        {
+            private int _episodeNo;
+
+            public Book(int episodeNo)
+            {
+                _episodeNo = episodeNo;
+            }
+            public int EpisodeNo { get { return _episodeNo; } }
+            public double Price { get { return 100; } }
+        }
+
+        class HarryPotterDiscountCollection
+        {
+            public List<Book> Books { get; set; } = new List<Book>();
+
+            public double Price { get { return Books.Count * 100 * getDiscount(Books.Count); } }
+
+            //double Discount { private get { return getOff(Books.Count); } }
+        }
+
+        private static double getDiscount(int count)
+        {
             double off = 0;
-            switch (kindOfBooksGroupCount)
+
+            switch (count)
             {
                 case 1:
                     off = 1;
@@ -68,32 +113,7 @@ namespace PotterShoppingCartTest
                     break;
             }
 
-            //books = books.Aggregate(new Book(1) { }, (result, d) => result.Price = d.Price,  );
-            //foreach(var books in booksGroup)
-            //{
-
-            //    foreach (var book in books)
-            //    {
-
-            //    }
-            //}
-
-            result = books.Where(b => b.EpisodeNo == 1).Select(b => b.Price).Sum();
-
-
-            return result;
-        }
-
-        class Book
-        {
-            private int _episodeNo;
-
-            public Book(int episodeNo)
-            {
-                _episodeNo = episodeNo;
-            }
-            public int EpisodeNo { get { return _episodeNo; } }
-            public double Price { get { return 100; } }
+            return off;
         }
     }
 }
