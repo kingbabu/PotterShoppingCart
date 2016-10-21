@@ -16,7 +16,7 @@ namespace PotterShoppingCartTest
         //   那麼那三本將享有10%的折扣，但重複的那一本，則仍須100元。
 
         [TestMethod]
-        public void Tset_Add_An_Episode_1_To_Shoppingcart_And_Price_Should_Be_100()
+        public void Test_Add_An_Episode_1_To_Shoppingcart_And_Price_Should_Be_100()
         {
             var books = new List<HarryPotter>() { new HarryPotter(1) };
 
@@ -27,7 +27,7 @@ namespace PotterShoppingCartTest
         }
 
         [TestMethod]
-        public void Tset_Add_Episode_1_To_2_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_190()
+        public void Test_Add_Episode_1_To_2_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_190()
         {
             var books = new List<HarryPotter>() { new HarryPotter(1),
                                            new HarryPotter(2) };
@@ -39,7 +39,7 @@ namespace PotterShoppingCartTest
         }
 
         [TestMethod]
-        public void Tset_Add_Episode_1_To_3_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_270()
+        public void Test_Add_Episode_1_To_3_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_270()
         {
             var books = new List<HarryPotter>() { new HarryPotter(1),
                                            new HarryPotter(2),
@@ -52,7 +52,7 @@ namespace PotterShoppingCartTest
         }
 
         [TestMethod]
-        public void Tset_Add_Episode_1_To_4_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_320()
+        public void Test_Add_Episode_1_To_4_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_320()
         {
             var books = new List<HarryPotter>() { new HarryPotter(1),
                                            new HarryPotter(2),
@@ -66,7 +66,7 @@ namespace PotterShoppingCartTest
         }
 
         [TestMethod]
-        public void Tset_Add_Episode_1_To_5_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_375()
+        public void Test_Add_Episode_1_To_5_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_375()
         {
             var books = new List<HarryPotter>() { new HarryPotter(1),
                                            new HarryPotter(2),
@@ -81,7 +81,7 @@ namespace PotterShoppingCartTest
         }
 
         [TestMethod]
-        public void Tset_Add_Episode_1_To_2_One_Of_Each_And_Two_Episode_3_To_Shoppingcart_And_Price_Should_Be_370()
+        public void Test_Add_Episode_1_To_2_One_Of_Each_And_Two_Episode_3_To_Shoppingcart_And_Price_Should_Be_370()
         {
             var books = new List<HarryPotter>() { new HarryPotter(1),
                                            new HarryPotter(2),
@@ -95,7 +95,7 @@ namespace PotterShoppingCartTest
         }
 
         [TestMethod]
-        public void Tset_Add_Episode_2_To_3_Two_Of_Each_And_An_Episode_1_To_Shoppingcart_And_Price_Should_Be_460()
+        public void Test_Add_Episode_2_To_3_Two_Of_Each_And_An_Episode_1_To_Shoppingcart_And_Price_Should_Be_460()
         {
             var books = new List<HarryPotter>() { new HarryPotter(1),
                                            new HarryPotter(2),
@@ -114,12 +114,13 @@ namespace PotterShoppingCartTest
             var groups = books.GroupBy(b => b.EpisodeNo);
             var discountCollections = getDiscountCollections(books, groups);
 
-            double result = discountCollections.Select(c => c.Price).Sum();
+            double result = discountCollections.Sum(c => c.Price);
             return result;
         }
 
         private static List<HarryPotterDiscountCollection> getDiscountCollections(List<HarryPotter> books, IEnumerable<IGrouping<int, HarryPotter>> groups)
         {
+            //todo remove HarryPotterDiscountCollection
             var discountCollections = new List<HarryPotterDiscountCollection>();
 
             while (books.Count > 0)
