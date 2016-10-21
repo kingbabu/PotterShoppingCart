@@ -15,14 +15,13 @@ namespace PotterShoppingCartTest
         //6. 需要留意的是，如果你買了四本書，其中三本不同，第四本則是重複的，
         //   那麼那三本將享有10%的折扣，但重複的那一本，則仍須100元。
 
-
         [TestMethod]
         public void Tset_Add_An_Episode_1_To_Shoppingcart_And_Price_Should_Be_100()
         {
-            var books = new List<Book>() { new Book(1) };
+            var books = new List<HarryPotter>() { new HarryPotter(1) };
 
             var expected = 100;
-            var actual = GetPrice(books);
+            var actual = GetShoppingcartTotalPrice(books);
 
             Assert.AreEqual(expected, actual);
         }
@@ -30,11 +29,11 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Tset_Add_Episode_1_To_2_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_190()
         {
-            var books = new List<Book>() { new Book(1),
-                                           new Book(2) };
+            var books = new List<HarryPotter>() { new HarryPotter(1),
+                                           new HarryPotter(2) };
 
             var expected = 190;
-            var actual = GetPrice(books);
+            var actual = GetShoppingcartTotalPrice(books);
 
             Assert.AreEqual(expected, actual);
         }
@@ -42,12 +41,12 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Tset_Add_Episode_1_To_3_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_270()
         {
-            var books = new List<Book>() { new Book(1),
-                                           new Book(2),
-                                           new Book(3),};
+            var books = new List<HarryPotter>() { new HarryPotter(1),
+                                           new HarryPotter(2),
+                                           new HarryPotter(3),};
 
             var expected = 270;
-            var actual = GetPrice(books);
+            var actual = GetShoppingcartTotalPrice(books);
 
             Assert.AreEqual(expected, actual);
         }
@@ -55,13 +54,13 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Tset_Add_Episode_1_To_4_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_320()
         {
-            var books = new List<Book>() { new Book(1),
-                                           new Book(2),
-                                           new Book(3),
-                                           new Book(4),};
+            var books = new List<HarryPotter>() { new HarryPotter(1),
+                                           new HarryPotter(2),
+                                           new HarryPotter(3),
+                                           new HarryPotter(4),};
 
             var expected = 320;
-            var actual = GetPrice(books);
+            var actual = GetShoppingcartTotalPrice(books);
 
             Assert.AreEqual(expected, actual);
         }
@@ -69,14 +68,14 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Tset_Add_Episode_1_To_5_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_375()
         {
-            var books = new List<Book>() { new Book(1),
-                                           new Book(2),
-                                           new Book(3),
-                                           new Book(4),
-                                           new Book(5),};
+            var books = new List<HarryPotter>() { new HarryPotter(1),
+                                           new HarryPotter(2),
+                                           new HarryPotter(3),
+                                           new HarryPotter(4),
+                                           new HarryPotter(5),};
 
             var expected = 375;
-            var actual = GetPrice(books);
+            var actual = GetShoppingcartTotalPrice(books);
 
             Assert.AreEqual(expected, actual);
         }
@@ -84,13 +83,13 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Tset_Add_Episode_1_To_2_One_Of_Each_And_Two_Episode_3_To_Shoppingcart_And_Price_Should_Be_370()
         {
-            var books = new List<Book>() { new Book(1),
-                                           new Book(2),
-                                           new Book(3),
-                                           new Book(3),};
+            var books = new List<HarryPotter>() { new HarryPotter(1),
+                                           new HarryPotter(2),
+                                           new HarryPotter(3),
+                                           new HarryPotter(3),};
 
             var expected = 370;
-            var actual = GetPrice(books);
+            var actual = GetShoppingcartTotalPrice(books);
 
             Assert.AreEqual(expected, actual);
         }
@@ -98,24 +97,31 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Tset_Add_Episode_2_To_3_Two_Of_Each_And_An_Episode_1_To_Shoppingcart_And_Price_Should_Be_460()
         {
-            var books = new List<Book>() { new Book(1),
-                                           new Book(2),
-                                           new Book(2),
-                                           new Book(3),
-                                           new Book(3),};
+            var books = new List<HarryPotter>() { new HarryPotter(1),
+                                           new HarryPotter(2),
+                                           new HarryPotter(2),
+                                           new HarryPotter(3),
+                                           new HarryPotter(3),};
 
             var expected = 460;
-            var actual = GetPrice(books);
+            var actual = GetShoppingcartTotalPrice(books);
 
             Assert.AreEqual(expected, actual);
         }
 
-        private double GetPrice(List<Book> books)
+        public double GetShoppingcartTotalPrice(List<HarryPotter> books)
         {
             var groups = books.GroupBy(b => b.EpisodeNo);
+            var discountCollections = getDiscountCollections(books, groups);
 
-            var discountGroups = new List<HarryPotterDiscountCollection>();
-            
+            double result = discountCollections.Select(c => c.Price).Sum();
+            return result;
+        }
+
+        private static List<HarryPotterDiscountCollection> getDiscountCollections(List<HarryPotter> books, IEnumerable<IGrouping<int, HarryPotter>> groups)
+        {
+            var discountCollections = new List<HarryPotterDiscountCollection>();
+
             while (books.Count > 0)
             {
                 var collection = new HarryPotterDiscountCollection();
@@ -129,62 +135,62 @@ namespace PotterShoppingCartTest
                     }
                 }
 
-                discountGroups.Add(collection);
+                discountCollections.Add(collection);
             }
-            
-            double result = discountGroups.Select(c => c.Price).Sum();
-            return result;
+
+            return discountCollections;
         }
 
-        
-
-        class Book
+        public class HarryPotter
         {
             private int _episodeNo;
 
-            public Book(int episodeNo)
+            public HarryPotter(int episodeNo)
             {
                 _episodeNo = episodeNo;
             }
+
             public int EpisodeNo { get { return _episodeNo; } }
-            public double Price { get { return 100; } }
         }
 
-        class HarryPotterDiscountCollection
+        private class HarryPotterDiscountCollection
         {
-            public List<Book> Books { get; set; } = new List<Book>();
+            public List<HarryPotter> Books { get; set; } = new List<HarryPotter>();
 
             public double Price { get { return Books.Count * 100 * getDiscount(Books.Count); } }
-
-            //double Discount { private get { return getOff(Books.Count); } }
         }
 
         private static double getDiscount(int count)
         {
-            double off = 0;
+            double discount = 0;
 
             switch (count)
             {
                 case 1:
-                    off = 1;
+                    discount = 1;
                     break;
+
                 case 2:
-                    off = 0.95;
+                    discount = 0.95;
                     break;
+
                 case 3:
-                    off = 0.9;
+                    discount = 0.9;
                     break;
+
                 case 4:
-                    off = 0.8;
+                    discount = 0.8;
                     break;
+
                 case 5:
-                    off = 0.75;
+                    discount = 0.75;
                     break;
+
                 default:
                     break;
             }
 
-            return off;
+            return discount;
         }
     }
 }
