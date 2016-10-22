@@ -139,7 +139,7 @@ namespace PotterShoppingCartTest
 
             do
             {
-                discountCollectionCount = getDiscountCollectionBooksCount(books, skipCount);
+                discountCollectionCount = getDiscountCollectionCount(books, skipCount);
                 if (discountCollectionCount > 0)
                 {
                     price += discountCollectionCount * 100 * _discounts[discountCollectionCount];
@@ -151,10 +151,10 @@ namespace PotterShoppingCartTest
             return price;
         }
 
-        private static int getDiscountCollectionBooksCount(List<HarryPotter> books, int skipCount)
+        private static int getDiscountCollectionCount(List<HarryPotter> books, int skipCount)
         {
-            var collections = books.GroupBy(b => b.EpisodeNo, (key, g) => g.Skip(skipCount).Take(1).FirstOrDefault()).Count(b => b != null);
-            return collections;
+            var count = books.GroupBy(b => b.EpisodeNo, (key, g) => g.Skip(skipCount).Take(1).FirstOrDefault()).Count(b => b != null);
+            return count;
         }
 
         public class HarryPotter
