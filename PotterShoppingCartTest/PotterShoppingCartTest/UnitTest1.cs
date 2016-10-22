@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,6 +8,15 @@ namespace PotterShoppingCartTest
     [TestClass]
     public class UnitTest1
     {
+        private static Dictionary<double, double> _discounts = new Dictionary<double, double>()
+        {
+            { 1, 1},
+            { 2, 0.95},
+            { 3, 0.9},
+            { 4, 0.8},
+            { 5, 0.75},
+        };
+
         //1. 一到五集的哈利波特，每一本都是賣100元
         //2. 如果你從這個系列買了兩本不同的書，則會有5%的折扣
         //3. 如果你買了三本不同的書，則會有10%的折扣
@@ -29,8 +39,10 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Test_Add_Episode_1_To_2_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_190()
         {
-            var books = new List<HarryPotter>() { new HarryPotter(1),
-                                           new HarryPotter(2) };
+            var books = new List<HarryPotter>() {
+                new HarryPotter(1),
+                new HarryPotter(2)
+            };
 
             var expected = 190;
             var actual = GetShoppingcartTotalPrice(books);
@@ -41,9 +53,11 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Test_Add_Episode_1_To_3_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_270()
         {
-            var books = new List<HarryPotter>() { new HarryPotter(1),
-                                           new HarryPotter(2),
-                                           new HarryPotter(3),};
+            var books = new List<HarryPotter>() {
+                new HarryPotter(1),
+                new HarryPotter(2),
+                new HarryPotter(3),
+            };
 
             var expected = 270;
             var actual = GetShoppingcartTotalPrice(books);
@@ -54,10 +68,12 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Test_Add_Episode_1_To_4_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_320()
         {
-            var books = new List<HarryPotter>() { new HarryPotter(1),
-                                           new HarryPotter(2),
-                                           new HarryPotter(3),
-                                           new HarryPotter(4),};
+            var books = new List<HarryPotter>() {
+                new HarryPotter(1),
+                new HarryPotter(2),
+                new HarryPotter(3),
+                new HarryPotter(4),
+            };
 
             var expected = 320;
             var actual = GetShoppingcartTotalPrice(books);
@@ -68,11 +84,13 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Test_Add_Episode_1_To_5_One_Of_Each_To_Shoppingcart_And_Price_Should_Be_375()
         {
-            var books = new List<HarryPotter>() { new HarryPotter(1),
-                                           new HarryPotter(2),
-                                           new HarryPotter(3),
-                                           new HarryPotter(4),
-                                           new HarryPotter(5),};
+            var books = new List<HarryPotter>() {
+                new HarryPotter(1),
+                new HarryPotter(2),
+                new HarryPotter(3),
+                new HarryPotter(4),
+                new HarryPotter(5),
+            };
 
             var expected = 375;
             var actual = GetShoppingcartTotalPrice(books);
@@ -83,10 +101,13 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Test_Add_Episode_1_To_2_One_Of_Each_And_Two_Episode_3_To_Shoppingcart_And_Price_Should_Be_370()
         {
-            var books = new List<HarryPotter>() { new HarryPotter(1),
-                                           new HarryPotter(2),
-                                           new HarryPotter(3),
-                                           new HarryPotter(3),};
+            var books = new List<HarryPotter>()
+            {
+                new HarryPotter(1),
+                new HarryPotter(2),
+                new HarryPotter(3),
+                new HarryPotter(3),
+            };
 
             var expected = 370;
             var actual = GetShoppingcartTotalPrice(books);
@@ -97,11 +118,13 @@ namespace PotterShoppingCartTest
         [TestMethod]
         public void Test_Add_Episode_2_To_3_Two_Of_Each_And_An_Episode_1_To_Shoppingcart_And_Price_Should_Be_460()
         {
-            var books = new List<HarryPotter>() { new HarryPotter(1),
-                                           new HarryPotter(2),
-                                           new HarryPotter(2),
-                                           new HarryPotter(3),
-                                           new HarryPotter(3),};
+            var books = new List<HarryPotter>() {
+                new HarryPotter(1),
+                new HarryPotter(2),
+                new HarryPotter(2),
+                new HarryPotter(3),
+                new HarryPotter(3),
+            };
 
             var expected = 460;
             var actual = GetShoppingcartTotalPrice(books);
@@ -111,37 +134,31 @@ namespace PotterShoppingCartTest
 
         public double GetShoppingcartTotalPrice(List<HarryPotter> books)
         {
-            var groups = books.GroupBy(b => b.EpisodeNo);
-            var discountCollections = getDiscountCollections(books, groups);
-
-            double result = discountCollections.Sum(c => c.Price);
-            return result;
-        }
-
-        private static List<HarryPotterDiscountCollection> getDiscountCollections(List<HarryPotter> books, IEnumerable<IGrouping<int, HarryPotter>> groups)
-        {
-            //todo remove HarryPotterDiscountCollection
-            var discountCollections = new List<HarryPotterDiscountCollection>();
-
-            while (books.Count > 0)
+            var discountCollection = new List<HarryPotter>();
+            double price = 0;
+            var skipCount = 0;
+            do
             {
-                var collection = new HarryPotterDiscountCollection();
-                foreach (var group in groups)
+                discountCollection = getDiscountCollection(books, skipCount);
+                if (discountCollection.Count > 0)
                 {
-                    foreach (var book in group.ToList())
-                    {
-                        collection.Books.Add(book);
-                        books.Remove(book);
-                        break;
-                    }
+                    price += discountCollection.Count * 100 * _discounts[discountCollection.Count];
+                    skipCount++;
                 }
-
-                discountCollections.Add(collection);
             }
+            while (discountCollection.Count > 0);
 
-            return discountCollections;
+            return price;
         }
 
+
+        private static List<HarryPotter> getDiscountCollection(List<HarryPotter> books, int skipCount)
+        {
+            var collections = books.GroupBy(b => b.EpisodeNo, (key, g) => g.Skip(skipCount).Take(1).FirstOrDefault()).Where(b => b != null).ToList();
+            
+            return collections;
+        }
+        
         public class HarryPotter
         {
             private int _episodeNo;
@@ -152,46 +169,6 @@ namespace PotterShoppingCartTest
             }
 
             public int EpisodeNo { get { return _episodeNo; } }
-        }
-
-        private class HarryPotterDiscountCollection
-        {
-            public List<HarryPotter> Books { get; set; } = new List<HarryPotter>();
-
-            public double Price { get { return Books.Count * 100 * getDiscount(Books.Count); } }
-        }
-
-        private static double getDiscount(int count)
-        {
-            double discount = 0;
-
-            switch (count)
-            {
-                case 1:
-                    discount = 1;
-                    break;
-
-                case 2:
-                    discount = 0.95;
-                    break;
-
-                case 3:
-                    discount = 0.9;
-                    break;
-
-                case 4:
-                    discount = 0.8;
-                    break;
-
-                case 5:
-                    discount = 0.75;
-                    break;
-
-                default:
-                    break;
-            }
-
-            return discount;
         }
     }
 }
