@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -134,31 +133,30 @@ namespace PotterShoppingCartTest
 
         public double GetShoppingcartTotalPrice(List<HarryPotter> books)
         {
-            var discountCollection = new List<HarryPotter>();
+            var discountCollectionCount = 0;
             double price = 0;
             var skipCount = 0;
+
             do
             {
-                discountCollection = getDiscountCollection(books, skipCount);
-                if (discountCollection.Count > 0)
+                discountCollectionCount = getDiscountCollectionBooksCount(books, skipCount);
+                if (discountCollectionCount > 0)
                 {
-                    price += discountCollection.Count * 100 * _discounts[discountCollection.Count];
+                    price += discountCollectionCount * 100 * _discounts[discountCollectionCount];
                     skipCount++;
                 }
             }
-            while (discountCollection.Count > 0);
+            while (discountCollectionCount > 0);
 
             return price;
         }
 
-
-        private static List<HarryPotter> getDiscountCollection(List<HarryPotter> books, int skipCount)
+        private static int getDiscountCollectionBooksCount(List<HarryPotter> books, int skipCount)
         {
-            var collections = books.GroupBy(b => b.EpisodeNo, (key, g) => g.Skip(skipCount).Take(1).FirstOrDefault()).Where(b => b != null).ToList();
-            
+            var collections = books.GroupBy(b => b.EpisodeNo, (key, g) => g.Skip(skipCount).Take(1).FirstOrDefault()).Count(b => b != null);
             return collections;
         }
-        
+
         public class HarryPotter
         {
             private int _episodeNo;
